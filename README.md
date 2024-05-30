@@ -93,10 +93,6 @@ if __name__ == "__main__":
 
 * Install `ujson` or `orjson` for better performance (Optional)
 
-### Contributing
-
-We welcome contributions to this project.
-
 ### License
 
-This project is licensed under the **Do What The Fuck You Want Public License**
+hmmm, License
