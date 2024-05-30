@@ -69,6 +69,8 @@ client = MTPClient(
 
 ```python
 async def main():
+    # Start the client
+    await client.start()
     # Test connection (no authorization required)
     result = await client.test_proxy("https://t.me/proxy?server=server&port=port&secret=secret")
     print(f"Test Proxy Result: {result}")  # Returns True/False
