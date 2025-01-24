@@ -42,7 +42,7 @@ jobs:
           import asyncio
 
           async def main():
-              client = MTPClient('$API_ID', '$API_HASH', '$BOT_TOKEN')
+              client = MTPClient(int('$API_ID'), '$API_HASH', '$BOT_TOKEN')  # Convert API_ID to int
               await client.start()
               result = await client.test_proxy('https://t.me/proxy?server=176.65.135.8&port=443&secret=eeRighJJvXrFGRMCIMJdCQ')
               print(f'Test Proxy Result: {result}')
