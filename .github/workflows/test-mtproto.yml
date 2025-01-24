@@ -1,0 +1,58 @@
+name: Test MTProto Proxy
+
+on:
+  push:
+    branches:
+      - main  # Trigger the workflow on pushes to the main branch
+  pull_request:
+    branches:
+      - main  # Trigger the workflow on pull requests to the main branch
+  workflow_dispatch:  # Allow manual triggering of the workflow
+
+jobs:
+  test-mtproto:
+    runs-on: ubuntu-latest  # Use the latest Ubuntu environment
+
+    steps:
+      # Step 1: Check out the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'  # Use Python 3.9
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # Step 4: Run the MTProto proxy test script
+      - name: Run MTProto proxy test
+        env:
+          API_ID: ${{ secrets.API_ID }}  # Telegram API ID (stored in GitHub Secrets)
+          API_HASH: ${{ secrets.API_HASH }}  # Telegram API Hash (stored in GitHub Secrets)
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}  # Telegram Bot Token (stored in GitHub Secrets)
+        run: |
+          python -c "
+          from mtp import MTPClient
+          import asyncio
+
+          async def main():
+              client = MTPClient('$API_ID', '$API_HASH', '$BOT_TOKEN')
+              await client.start()
+              result = await client.test_proxy('https://t.me/proxy?server=176.65.135.8&port=443&secret=eeRighJJvXrFGRMCIMJdCQ')
+              print(f'Test Proxy Result: {result}')
+
+          asyncio.run(main())
+          "
+
+      # Step 5: Upload test results as an artifact (optional)
+      - name: Upload test results
+        uses: actions/upload-artifact@v3
+        with:
+          name: mtproto-test-results
+          path: test_results.txt  # Replace with the actual output file if the script generates one
