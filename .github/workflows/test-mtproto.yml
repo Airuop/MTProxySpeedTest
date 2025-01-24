@@ -37,18 +37,7 @@ jobs:
           API_HASH: ${{ secrets.API_HASH }}  # Telegram API Hash (stored in GitHub Secrets)
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}  # Telegram Bot Token (stored in GitHub Secrets)
         run: |
-          python -c "
-          from mtp import MTPClient
-          import asyncio
-
-          async def main():
-              client = MTPClient(int('$API_ID'), '$API_HASH', '$BOT_TOKEN')  # Convert API_ID to int
-              await client.start()
-              result = await client.test_proxy('https://t.me/proxy?server=176.65.135.8&port=443&secret=eeRighJJvXrFGRMCIMJdCQ')
-              print(f'Test Proxy Result: {result}')
-
-          asyncio.run(main())
-          "
+          python ./mtp.py
 
       # Step 5: Upload test results as an artifact (optional)
       - name: Upload test results
